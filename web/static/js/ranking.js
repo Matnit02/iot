@@ -9,7 +9,7 @@ function getHighestAirTemp(reservoirs) {
         }
     });
     var element = document.getElementById("highest-air-temp");
-    element.textContent = maxAirTemp + " - " + location;
+    element.textContent = maxAirTemp + "°C - " + location;
 }
 
 function getHighestWaterTemp(reservoirs) {
@@ -23,7 +23,7 @@ function getHighestWaterTemp(reservoirs) {
         }
     });
     var element = document.getElementById("highest-water-temp");
-    element.textContent = maxWaterTemp + " - " + location;
+    element.textContent = maxWaterTemp + "°C - " + location;
 }
 
 function getBestPressure(reservoirs) {
@@ -37,7 +37,7 @@ function getBestPressure(reservoirs) {
         }
     });
     var element = document.getElementById("best-pressure");
-    element.textContent = bestPressure + " - " + location;
+    element.textContent = bestPressure + " hPa - " + location;
 }
 
 function getLowestNoise(reservoirs) {
@@ -51,5 +51,5 @@ function getLowestNoise(reservoirs) {
         }
     });
     var element = document.getElementById("lowest-noise");
-    element.textContent = minNoise + " - " + location;
+    element.textContent = minNoise + " dB - " + location;
 }

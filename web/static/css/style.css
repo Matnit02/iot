@@ -9,12 +9,12 @@ body
     grid-template-columns: repeat(4, 1fr); /* 4 columns by default */
     gap: 20px;
     padding: 20px;
+    line-height: 1.5;
 }
 
 .ranking-title {
     font-weight: bold;
     font-size: 18px;
-    margin-bottom: 10px;
 }
 
 .ranking-value {
