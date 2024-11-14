@@ -29,3 +29,13 @@ Check if you're in venv, if not, run `source venv/bin/activate`
 If you don't have `venv` folder, run `python -m venv venv`, then run command above
 
 After entering `venv` (you should see `(venv)` at the beginning of your commandline prompt), run `pip install -r requirements.txt`
+
+## 1-wire
+
+```
+sudo raspi-config
+sudo nano /boot/config.txt (add dtoverlay=w1-gpio,gpiopin=4)
+sudo modprobe w1-gpio
+sudo modprobe w1-therm
+```
+After reboot check `cd /sys/bus/w1/devices` to see temperature sensor
