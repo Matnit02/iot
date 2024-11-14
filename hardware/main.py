@@ -1,20 +1,25 @@
-import time, asyncio
+import time, asyncio, requests
 from inputlibs.mic import Microphone
 from inputlibs.uart import Air
 from inputlibs.proxy import Proximity
 
+
 mic = Microphone()
 mic.setup(5)
-print(mic.read())
-mic.clean()
-
 proxy = Proximity()
 proxy.setup()
-time.sleep(1)
-print(proxy.read())
-proxy.clean()
-
 air = Air()
 air.setup("/dev/ttyS0")
-print(asyncio.run(air.read()))
+
+time.sleep(1)
+
+while True:
+  print(proxy.read())
+  print(mic.read())
+  print(asyncio.run(air.read()))
+
+#r = requests.post('SOME URL', data={'mic': mic.read(), 'proxy': proxy.read(), 'air': asyncio.run(air.read())})
+
+proxy.clean()
+mic.clean()
 air.clean()
