@@ -1,6 +1,6 @@
 import time, asyncio, requests
 from inputlibs.mic import Microphone
-from inputlibs.uart import Air
+from inputlibs.air import Air
 from inputlibs.proxy import Proximity
 
 
