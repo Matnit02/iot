@@ -128,3 +128,8 @@ if DEBUG:
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Custom settings
+SENSOR_VALUES_MIN_INTERVAL_MINUTES = 60
+LOCATION_CHANGE_INTERVAL_HOURS = 24
+MAX_LOCATION_CHANGES = 5
