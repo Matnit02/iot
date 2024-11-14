@@ -62,10 +62,6 @@ class Device(models.Model):
         self.api_key_active = False
         self.save()
 
-    def verify_key(self, message):
-        decoded_key = self.decode_message(message)
-        return decoded_key == self.api_key
-
     def key_reactivate(self):
         """Activates the API key by setting `api_key_active` to True and clearing the `api_key` field."""
         self.api_key_active = True
