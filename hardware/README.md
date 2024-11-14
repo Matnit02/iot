@@ -21,3 +21,11 @@ After reboot check with `ls /dev/i2c* /dev/spi*` to see if I2C ports are listed
 ## Other interfaces
 
 Enable UART through `sudo raspi-config` > Interfaces
+
+# `requirements.txt` install
+
+Check if you're in venv, if not, run `source venv/bin/activate`
+
+If you don't have `venv` folder, run `python -m venv venv`, then run command above
+
+After entering `venv` (you should see `(venv)` at the beginning of your commandline prompt), run `pip install -r requirements.txt`
