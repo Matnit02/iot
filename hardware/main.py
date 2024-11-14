@@ -1,5 +1,6 @@
-import time
+import time, asyncio
 from inputlibs.mic import Microphone
+from inputlibs.uart import Air
 from inputlibs.proxy import Proximity
 
 mic = Microphone()
@@ -12,3 +13,8 @@ proxy.setup()
 time.sleep(1)
 print(proxy.read())
 proxy.clean()
+
+air = Air()
+air.setup("/dev/ttyS0")
+print(asyncio.run(air.read()))
+air.clean()
