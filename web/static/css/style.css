@@ -4,6 +4,24 @@ body
     background-color: #f8f8f8;
 }
 
+.ranking-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columns by default */
+    gap: 20px;
+    padding: 20px;
+}
+
+.ranking-title {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.ranking-value {
+    font-weight: initial;
+    font-size: 18px;
+}
+
 /* Grid container for the cards */
 .card-container {
     display: grid;

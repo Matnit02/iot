@@ -63,8 +63,41 @@
     </div>
 </div>
 
+<div class="ranking-container">
+    <div class="card">
+        <div class="ranking-title">Highest air temperature:<br>
+            <div class="ranking-value" id="highest-air-temp"></div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="ranking-title">Highest water temperature:<br>
+            <div class="ranking-value" id="highest-water-temp"></div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="ranking-title">Pressure closest to 1 atm/1013 hPa:
+            <div class="ranking-value" id="best-pressure"></div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="ranking-title">Lowest noise level:
+            <div class="ranking-value" id="lowest-noise"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    getHighestAirTemp(reservoirs);
+    getHighestWaterTemp(reservoirs);
+    getBestPressure(reservoirs);
+    getLowestNoise(reservoirs);
+ }, false);
+</script>
+
     <script src="../static/js/charts.js"></script>
     <script src="../static/js/map.js"></script>
     <script src="../static/js/nav.js"></script>
+    <script src="../static/js/ranking.js"></script>
 </body>
 </html>
