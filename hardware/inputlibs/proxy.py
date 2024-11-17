@@ -9,7 +9,7 @@ class Proximity:
     self.sensor.enable
     self.sensor.enable_color = True
   def read(self):
-    return {"value": self.sensor.color_data[3]}
+    return self.sensor.color_data[3]
   def clean(self):
     pass
 

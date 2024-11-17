@@ -10,7 +10,7 @@ class Microphone:
     self.pin_id=pin_id
 
   def read(self):
-    return {"value": GPIO.input(self.pin_id)}
+    return GPIO.input(self.pin_id)
 
   def clean(self):
     GPIO.cleanup()
