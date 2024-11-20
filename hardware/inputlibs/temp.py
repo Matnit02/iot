@@ -5,20 +5,21 @@ import time
 # Ścieżka do pliku z danymi czujnika
 base_dir = '/sys/bus/w1/devices/'
 device_folders = glob.glob(base_dir + '28*')
-
+device_file=[]
 if device_folders:
-    device_file = device_folders[0] + '/w1_slave'
+    device_file.append(device_folders[0] + '/w1_slave')
+    device_file.append(device_folders[1] + '/w1_slave')
 else:
     print("Czujnik nie został wykryty. Sprawdź połączenia i konfigurację 1-Wire.")
     exit(1)
 
-def read_temp_raw():
-    with open(device_file, 'r') as f:
+def read_temp_raw(filepath):
+    with open(filepath, 'r') as f:
         lines = f.readlines()
     return lines
 
-def read_temp():
-    lines = read_temp_raw()
+def read_temp(filepath):
+    lines = read_temp_raw(filepath)
     while lines[0].strip()[-3:] != 'YES':
         time.sleep(0.2)
         lines = read_temp_raw()
@@ -29,5 +30,6 @@ def read_temp():
         return temp_c
 
 while True:
-    print("Temperatura: ", read_temp(), "°C")
+    print("Temperatura 1: ", read_temp(device_file[0]), "°C")
+    print("Temperatura 2: ", read_temp(device_file[1]), "°C")
     time.sleep(1)

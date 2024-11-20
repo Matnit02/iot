@@ -1,6 +1,5 @@
 import time, asyncio, requests, logging
 from logging.handlers import RotatingFileHandler
-from inputlibs.mic import Microphone
 from inputlibs.air import Air
 from inputlibs.proxy import Proximity
 
@@ -14,8 +13,6 @@ logger.addHandler(log_handler)
 
 logger.info("Started")
 
-mic = Microphone()
-mic.setup(5)
 proxy = Proximity()
 proxy.setup()
 air = Air()
@@ -28,13 +25,6 @@ try:
   data["brightness"] = proxy.read()
 except Exception as err:
   data["brightness"] = "error"
-  logger.error(err)
-
-
-try:
-  data["microphone"] = mic.read()
-except Exception as err:
-  data["microphone"] = "error"
   logger.error(err)
 
 try:
@@ -54,7 +44,6 @@ except Exception as err:
 #r = requests.post('SOME URL', data={'mic': mic.read(), 'proxy': proxy.read(), 'air': asyncio.run(air.read())})
 
 proxy.clean()
-mic.clean()
 air.clean()
 
 print(data)
