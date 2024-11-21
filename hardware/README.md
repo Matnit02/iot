@@ -18,9 +18,24 @@ sudo -E env PATH=$PATH python3 raspi-blinka.py
 
 After reboot check with `ls /dev/i2c* /dev/spi*` to see if I2C ports are listed
 
-## Other interfaces
+## UART
 
 Enable UART through `sudo raspi-config` > Interfaces
+
+## 1-wire
+
+Enable 1-wire through `sudo raspi-config`
+
+Add 
+
+```
+dtoverlay=w1-gpio,gpiopin=20
+dtoverlay=w1-gpio,gpiopin=21
+```
+
+to `/boot/firmware/config.txt` (with `sudo nano`)
+
+After reboot check `cd /sys/bus/w1/devices` to see temperature sensor
 
 # `requirements.txt` install
 
@@ -29,13 +44,3 @@ Check if you're in venv, if not, run `source venv/bin/activate`
 If you don't have `venv` folder, run `python -m venv venv`, then run command above
 
 After entering `venv` (you should see `(venv)` at the beginning of your commandline prompt), run `pip install -r requirements.txt`
-
-## 1-wire
-
-```
-sudo raspi-config
-sudo nano /boot/config.txt (add dtoverlay=w1-gpio,gpiopin=4)
-sudo modprobe w1-gpio
-sudo modprobe w1-therm
-```
-After reboot check `cd /sys/bus/w1/devices` to see temperature sensor
