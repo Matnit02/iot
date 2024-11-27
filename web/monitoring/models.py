@@ -91,6 +91,7 @@ class Device(models.Model):
         # Albo po prostu usunąć tą metodę
         pass
 
+
 class DeviceSnapshot(models.Model):
     device = models.ForeignKey(
         Device,
