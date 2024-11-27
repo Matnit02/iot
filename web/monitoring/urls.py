@@ -1,8 +1,7 @@
 from django.urls import path
-from .views import TempTableView, TempMapView
+from .views import HomepageView
 
 
 urlpatterns = [
-    path('map/', TempMapView.as_view(), name='map'),
-    path('table/', TempTableView.as_view(), name='table'),
+    path('', HomepageView.as_view(), name='homepage'),
 ]
