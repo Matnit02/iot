@@ -1,12 +1,10 @@
 import secrets
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator
-
-# szyfrowanie
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives import padding
 from cryptography.hazmat.backends import default_backend
-import os
+import base64
 
 
 class Device(models.Model):

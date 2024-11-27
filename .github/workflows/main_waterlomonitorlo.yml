@@ -34,8 +34,9 @@ jobs:
 
       - name: Zip artifact for deployment
         run: |
-          cp web/requirements.txt .
-          zip -r release.zip ./web/* ./requirements.txt
+          mv web/* .
+          rm -rf web
+          zip -r release.zip ./*
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
