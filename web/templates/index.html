@@ -3,47 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Water Reservoir Monitoring</title>
-    <link rel="stylesheet" href="../static/css/style.css">
+    <title>Responsive Gauges</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.4/raphael-min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/justgage@1.4.0/justgage.min.js"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+    <link rel="stylesheet" href="../static/css/style.css"></link>
 </head>
 <body>
-    <header>
-        <h1>Water Reservoir Monitoring</h1>
-    </header>
 
-    <main>
-        <section class="map-section">
-            <h2>Map of Water Reservoirs</h2>
-            <!-- Map Placeholder -->
-            <div id="map">Map will be displayed here</div>
-        </section>
+<header>
+    <button onclick="openMenu()" class="menu-btn">&#9776;</button>
+    <h1>Water Reservoirs Map</h1>
+</header>
 
-        <!-- Statyczna sekcja parametrów -->
-        <section class="parameters">
-            <h2>Parameters Overview</h2>
-            <div class="parameter">
-                <h3>Water Temperature</h3>
-                <p id="temperature">25°C</p>
+    <!-- Sidebar Menu -->
+    <div id="sidebar" class="sidebar">
+        <button onclick="closeMenu()" class="close-btn">&times;</button>
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Reservoirs</a>
+            <div class="submenu">
+                <a href="#" onclick="selectReservoir(1)">Bagry</a>
+                <a href="#" onclick="selectReservoir(2)">Zalew Nowohucki</a>
+                <a href="#" onclick="selectReservoir(3)">Zakrzówek</a>
+                <a href="#" onclick="selectReservoir(4)">Przylasek Rusiecki</a>
+                <a href="#" onclick="selectReservoir(5)">Kryspinów</a>
             </div>
-            <div class="parameter">
-                <h3>Air Pressure</h3>
-                <p id="pressure">1012 hPa</p>
-            </div>
-            <div class="parameter">
-                <h3>Air Quality</h3>
-                <p id="air-quality">Good</p>
-            </div>
-            <div class="parameter">
-                <h3>Noise Level</h3>
-                <p id="noise">55 dB</p>
-            </div>
-        </section>
-    </main>
+        <a href="#">Contact</a>
+    </div>
 
-    <footer>
-        <p>&copy; 2024 Water Reservoir Monitoring System</p>
-    </footer>
 
-    <script src="../static/js/script.js"></script>
+    <div id="map" class="map-container"></div>
+<div id="reservoir-gauges-container">
+    <div class="card-container">
+        <div class="card">
+            <div class="gauge-title">Air Temperature</div>
+            <div class="gauge-time">A few seconds ago</div>
+            <div id="airTempGauge" class="gauge-container"></div>
+        </div>
+        <div class="card">
+            <div class="gauge-title">Water Temperature</div>
+            <div class="gauge-time">A few seconds ago</div>
+            <div id="waterTempGauge" class="gauge-container"></div>
+        </div>
+        <div class="card">
+            <div class="gauge-title">Barometric Pressure</div>
+            <div class="gauge-time">A few seconds ago</div>
+            <div id="pressureGauge" class="gauge-container"></div>
+        </div>
+        <div class="card">
+            <div class="gauge-title">Noise Level</div>
+            <div class="gauge-time">A few seconds ago</div>
+            <div id="noiseLevelGauge" class="gauge-container"></div>
+        </div>
+    </div>
+</div>
+
+<div class="ranking-container">
+    <div class="card">
+        <div class="ranking-title">Highest air temperature:<br>
+            <div class="ranking-value" id="highest-air-temp"></div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="ranking-title">Highest water temperature:<br>
+            <div class="ranking-value" id="highest-water-temp"></div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="ranking-title">Pressure closest to 1 atm/1013 hPa:
+            <div class="ranking-value" id="best-pressure"></div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="ranking-title">Lowest noise level:
+            <div class="ranking-value" id="lowest-noise"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    getHighestAirTemp(reservoirs);
+    getHighestWaterTemp(reservoirs);
+    getBestPressure(reservoirs);
+    getLowestNoise(reservoirs);
+ }, false);
+</script>
+
+    <script src="../static/js/charts.js"></script>
+    <script src="../static/js/map.js"></script>
+    <script src="../static/js/nav.js"></script>
+    <script src="../static/js/ranking.js"></script>
 </body>
 </html>
