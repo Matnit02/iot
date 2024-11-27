@@ -30,12 +30,14 @@ jobs:
 
       - name: Run collectstatic
         working-directory: web
-        run: python manage.py collectstatic
+        run: |
+          source venv/bin/activate
+          python manage.py collectstatic --noinput
 
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
       - name: Zip artifact for deployment
-        run: zip -r release.zip ./web/*
+        run: zip -r release.zip ./web/* requirements.txt
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
