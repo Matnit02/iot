@@ -24,9 +24,9 @@ class Air:
         if not calc_cr == int.from_bytes(buffer[38:40]):
           return {"status": "fail", "error": "crc", "cr1":int.from_bytes(buffer[38:40]), "cr2": calc_cr}
         return {"status": "success", "length": len(buffer.hex()),
-              "PM 1.0":int.from_bytes(buffer[10:12],'big'),
-              "PM 2.5":int.from_bytes(buffer[12:14],'big'),
-              "PM 10":int.from_bytes(buffer[14:16],'big'),
+              "pm_1.0":int.from_bytes(buffer[10:12],'big'),
+              "pm_2.5":int.from_bytes(buffer[12:14],'big'),
+              "pm_10":int.from_bytes(buffer[14:16],'big'),
               "0.3um":int.from_bytes(buffer[16:18],'big'),
               "0.5um":int.from_bytes(buffer[18:20],'big'),
               "1.0um":int.from_bytes(buffer[20:22],'big'),
