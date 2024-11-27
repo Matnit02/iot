@@ -1,8 +1,141 @@
+import secrets
 from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator
+
+# szyfrowanie
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from cryptography.hazmat.primitives import padding
+from cryptography.hazmat.backends import default_backend
+import os
 
 
 class Device(models.Model):
+    encryption_key = models.CharField(
+        max_length=44,
+        help_text="Encryption key used for API key encryption when needed.",
+        validators=[
+            MinLengthValidator(44)
+        ],
+    )
+
+
+    api_key = models.CharField(
+        max_length=255,
+        unique=True,
+        help_text="Primary API key for authorization of data send by device."
+    )
+
+    api_key_active = models.BooleanField(
+        default=True,
+        help_text="Indicates if the API key is currently active and valid."
+    )
+
+    temporary_api_key = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        help_text="A temporary API key field used when moving from old key to new one."
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        help_text="The date and time when this device was created."
+    )
+
+    def __str__(self):
+        return f"Device {self.api_key}"
+
+    @classmethod
+    def get_device_by_api_key(cls, api_key):
+        """
+        Retrieves a Device instance by api_key or temporary_api_key.
+
+        Params:
+            api_key (str): The API key to search for.
+
+        Returns:
+            tuple: A tuple containing the Device instance (or None if not found) and a boolean
+                   indicating whether the main API key was used.
+        """
+        try:
+            device = cls.objects.get(api_key=api_key)
+            return device, True
+        except cls.DoesNotExist:
+            try:
+                device = cls.objects.get(temporary_api_key=api_key)
+                return device, False
+            except cls.DoesNotExist:
+                return None, False
+
+    def key_deactivate(self):
+        """Deactivates the API key by setting api_key_active to False."""
+        self.api_key_active = False
+        self.save()
+
+    def key_reactivate(self):
+        """Activates the API key by setting `api_key_active` to True and clearing the `api_key` field."""
+        self.api_key_active = True
+        self.api_key = None
+        self.save()
+
+    def is_api_key_active(self):
+        """Returns True if the API key is active, False otherwise."""
+        return self.api_key_active
+
+    def generate_new_api_key(self):
+        """Generates a unique, secure API key for the Device model."""
+        while True:
+            new_key = secrets.token_urlsafe(255)
+            if not Device.objects.filter(api_key=new_key).exists():
+                self.temporary_api_key = self.api_key
+                self.api_key = new_key
+                self.save()
+                break
+
+
+    def encrypt_message_ecb(self, message: str, key: bytes) -> bytes:
+        # Ustawienie szyfrowania AES w trybie ECB
+        cipher = Cipher(algorithms.AES(key), modes.ECB(), backend=default_backend())
+    def encrypt_message(self, message: str) -> str:
+        key_bytes = base64.b64decode(self.encryption_key.encode())
+
+        cipher = Cipher(algorithms.AES(key_bytes), modes.ECB(), backend=default_backend())
+        encryptor = cipher.encryptor()
+
+        padder = padding.PKCS7(128).padder()
+        padded_message = padder.update(message.encode()) + padder.finalize()
+
+        encrypted_message = encryptor.update(padded_message) + encryptor.finalize()
+
+        return base64.b64encode(encrypted_message).decode()
+
+
+    def decrypt_message(self, encrypted_message: str) -> str:
+        key_bytes = base64.b64decode(self.encryption_key.encode())
+        encrypted_bytes = base64.b64decode(encrypted_message.encode())
+
+        cipher = Cipher(algorithms.AES(key_bytes), modes.ECB(), backend=default_backend())
+        decryptor = cipher.decryptor()
+
+        decrypted_padded_message = decryptor.update(encrypted_bytes) + decryptor.finalize()
+
+        unpadder = padding.PKCS7(128).unpadder()
+        decrypted_message = unpadder.update(decrypted_padded_message) + unpadder.finalize()
+
+        return decrypted_message.decode()
+
+
+class DeviceSnapshot(models.Model):
+    device = models.ForeignKey(
+        Device,
+        on_delete=models.CASCADE,
+        related_name='snapshots',
+        help_text="The device this snapshot is associated with."
+    )
+    name = models.CharField(
+        max_length=255,
+        help_text="An optional name or title for this snapshot."
+    )
     location_latitude = models.DecimalField(
         max_digits=9,
         decimal_places=6,
@@ -18,11 +151,15 @@ class Device(models.Model):
     description = models.TextField(
         blank=True,
         null=True,
-        help_text="Additional details or notes about the device."
+        help_text="Additional details or notes about the device snapshot."
     )
     active = models.BooleanField(
         default=True,
         help_text="Indicates whether the device is currently operational. Depending on last update time."
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        help_text="The date and time when this snapshot was created."
     )
 
     def __str__(self):
@@ -30,8 +167,8 @@ class Device(models.Model):
 
 
 class SensorValues(models.Model):
-    device = models.ForeignKey(
-        Device,
+    device_snapshot = models.ForeignKey(
+        DeviceSnapshot,
         on_delete=models.CASCADE,
         related_name='sensors',
         help_text="The device that collected this sensor data."
@@ -91,5 +228,5 @@ class SensorValues(models.Model):
     )
 
     def __str__(self):
-        return (f"Sensor data for device at {self.device.location_latitude}, "
-                f"{self.device.location_longitude} on {self.timestamp}")
+        return (f"Sensor data for device at {self.device_snapshot .location_latitude}, "
+                f"{self.device_snapshot .location_longitude} on {self.timestamp}")
