@@ -7,7 +7,13 @@ from .settings import BASE_DIR
 
 SECRET_KEY = os.environ['SECRET']
 ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']]
-CSRF_TRUSTED_ORIGINS = [f"https://{os.environ.get('WEBSITE_HOSTNAME')}"]
+
+hostname = os.environ.get('WEBSITE_HOSTNAME')
+if hostname:
+    CSRF_TRUSTED_ORIGINS = [f"https://{hostname}"]
+else:
+    CSRF_TRUSTED_ORIGINS = ["http://localhost"]
+
 DEBUG = False
 
 MIDDLEWARE = [
