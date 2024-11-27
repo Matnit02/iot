@@ -33,7 +33,9 @@ jobs:
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
       - name: Zip artifact for deployment
-        run: zip -r release.zip ./web/* ./web/requirements.txt
+        run: |
+          cp web/requirements.txt .
+          zip -r release.zip ./web/* ./requirements.txt
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
