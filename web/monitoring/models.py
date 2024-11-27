@@ -16,6 +16,10 @@ class Device(models.Model):
         ],
     )
 
+    name = models.CharField(
+        max_length=255,
+        help_text="An optional name or title for this snapshot."
+    )
 
     api_key = models.CharField(
         max_length=255,
@@ -41,7 +45,7 @@ class Device(models.Model):
     )
 
     def __str__(self):
-        return f"Device {self.api_key}"
+        return f"{self.name or 'Unnamed Device'} ({self.api_key})"
 
     @classmethod
     def get_device_by_api_key(cls, api_key):
@@ -130,10 +134,6 @@ class DeviceSnapshot(models.Model):
         related_name='snapshots',
         help_text="The device this snapshot is associated with."
     )
-    name = models.CharField(
-        max_length=255,
-        help_text="An optional name or title for this snapshot."
-    )
     location_latitude = models.DecimalField(
         max_digits=9,
         decimal_places=6,
@@ -217,12 +217,6 @@ class SensorValues(models.Model):
         null=True,
         blank=True,
         help_text="Light intensity in lux, which measures brightness."
-    )
-    weather_condition = models.CharField(
-        max_length=50,
-        blank=True,
-        null=True,
-        help_text="Weather condition calculated on the device, e.g., 'Sunny', 'Cloudy'."
     )
 
     def __str__(self):

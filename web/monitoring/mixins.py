@@ -79,10 +79,10 @@ class AnomalyDetectionMixin:
                 min_interval = timedelta(minutes=settings.SENSOR_VALUES_MIN_INTERVAL_MINUTES)
                 time_since_last_data = timezone.now() - last_sensor_data.timestamp
                 if time_since_last_data < min_interval:
-                    device.deactivate()
+                    device.key_deactivate()
                     return JsonResponse({'success': False, 'error': 'device_deauthenticated'})
 
-            data = request.json()
+            data = json.loads(request.body)
             new_latitude = data.get("location_latitude")
             new_longitude = data.get("location_longitude")
 

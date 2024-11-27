@@ -4,13 +4,13 @@ from .models import Device, DeviceSnapshot, SensorValues
 
 @admin.register(Device)
 class DeviceAdmin(admin.ModelAdmin):
-    list_display = ('id', 'encryption_key', 'api_key', 'api_key_active', 'temporary_api_key', 'created_at')
-    search_fields = ('id', 'encryption_key', 'api_key', 'api_key_active', 'temporary_api_key', 'created_at')
+    list_display = ('id', 'name', 'encryption_key', 'api_key', 'api_key_active', 'temporary_api_key', 'created_at')
+    search_fields = ('id', 'name', 'encryption_key', 'api_key', 'api_key_active', 'temporary_api_key', 'created_at')
 
 
 @admin.register(DeviceSnapshot)
 class DeviceSnapshotAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'device', 'location_latitude', 'location_longitude', 'active', 'description', 'last_sensor_update',
+    list_display = ('id', 'device', 'location_latitude', 'location_longitude', 'active', 'description', 'last_sensor_update',
                     'created_at')
     search_fields = ('id', 'location_latitude', 'location_longitude', 'description', 'created_at')
     list_filter = ('active',)
@@ -28,7 +28,7 @@ class DeviceSnapshotAdmin(admin.ModelAdmin):
 @admin.register(SensorValues)
 class SensorAdmin(admin.ModelAdmin):
     list_display = ('id', 'device_snapshot', 'timestamp', 'air_temperature', 'water_temperature', 'atmospheric_pressure',
-                    'pm1_0', 'pm2_5', 'pm10', 'noise_level', 'light_intensity', 'weather_condition')
+                    'pm1_0', 'pm2_5', 'pm10', 'noise_level', 'light_intensity',)
     search_fields = ('id', 'timestamp')
     list_filter =   ('timestamp', 'air_temperature', 'water_temperature', 'atmospheric_pressure', 'pm1_0',
-                     'pm2_5', 'pm10', 'noise_level', 'light_intensity', 'weather_condition')
+                     'pm2_5', 'pm10', 'noise_level', 'light_intensity',)

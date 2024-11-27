@@ -1,6 +1,8 @@
 import json
 from django.views.generic import TemplateView, View
 from django.http import JsonResponse, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 from .mixins import AuthenticateDevice, AnomalyDetectionMixin
 from .models import Device, DeviceSnapshot, SensorValues
 
@@ -18,7 +20,7 @@ class HomepageView(TemplateView):
             if latest_sensor:
                 reservoirs.append({
                     "id": snapshot.id,
-                    "name": snapshot.name,
+                    "name": snapshot.device.name,
                     "coordinates": [float(snapshot.location_latitude), float(snapshot.location_longitude)],
                     "air_temperature": latest_sensor.air_temperature,
                     "water_temperature": latest_sensor.water_temperature,
@@ -53,6 +55,7 @@ class ReauthenticateDevice(View):
         return JsonResponse({'success': False, 'key': encrypted_key})
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class ReceiveData(AuthenticateDevice, AnomalyDetectionMixin, View):
     def post(self, request):
         data = json.loads(request.body)
@@ -84,7 +87,6 @@ class ReceiveData(AuthenticateDevice, AnomalyDetectionMixin, View):
             pm10=sensor_data.get("pm10"),
             noise_level=sensor_data.get("noise_level"),
             light_intensity=sensor_data.get("light_intensity"),
-            weather_condition=sensor_data.get("weather_condition"),
         )
 
         return JsonResponse({'success': True})
