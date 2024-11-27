@@ -5,12 +5,8 @@ from .mixins import AuthenticateDevice, AnomalyDetectionMixin
 from .models import Device, DeviceSnapshot, SensorValues
 
 
-class TempMapView(TemplateView):
-    template_name = 'map.html'
-
-
-class TempTableView(TemplateView):
-    template_name = 'table.html'
+class HomepageView(TemplateView):
+    template_name = 'homepage.html'
 
 
 class ReauthenticateDevice(View):
