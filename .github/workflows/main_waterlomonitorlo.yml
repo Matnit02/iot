@@ -34,10 +34,11 @@ jobs:
 
       - name: Zip artifact for deployment
         run: |
-          mv web/web ./
+          mv web/web ./web_temp
           mv web/* ./
           rm -rf web
-          zip -r release.zip ./*
+          mv web_temp ./web
+          zip -r release.zip ./* 
 
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
