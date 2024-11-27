@@ -1,6 +1,6 @@
 import secrets
 from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator
 
 # szyfrowanie
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
@@ -11,9 +11,13 @@ import os
 
 class Device(models.Model):
     encryption_key = models.CharField(
-        max_length=255,
-        help_text="Encryption key used for API key encryption when needed."
+        max_length=44,
+        help_text="Encryption key used for API key encryption when needed.",
+        validators=[
+            MinLengthValidator(44)
+        ],
     )
+
 
     api_key = models.CharField(
         max_length=255,
@@ -92,28 +96,32 @@ class Device(models.Model):
     def encrypt_message_ecb(self, message: str, key: bytes) -> bytes:
         # Ustawienie szyfrowania AES w trybie ECB
         cipher = Cipher(algorithms.AES(key), modes.ECB(), backend=default_backend())
+    def encrypt_message(self, message: str) -> str:
+        key_bytes = base64.b64decode(self.encryption_key.encode())
+
+        cipher = Cipher(algorithms.AES(key_bytes), modes.ECB(), backend=default_backend())
         encryptor = cipher.encryptor()
 
-        # Padding wiadomości do wymaganego rozmiaru przez AES
         padder = padding.PKCS7(128).padder()
         padded_message = padder.update(message.encode()) + padder.finalize()
 
-        # Szyfrowanie wiadomości
         encrypted_message = encryptor.update(padded_message) + encryptor.finalize()
-        return encrypted_message
+
+        return base64.b64encode(encrypted_message).decode()
 
 
-    def decrypt_message_ecb(self, encrypted_message: bytes, key: bytes) -> str:
-        # Ustawienie szyfrowania AES w trybie ECB
-        cipher = Cipher(algorithms.AES(key), modes.ECB(), backend=default_backend())
+    def decrypt_message(self, encrypted_message: str) -> str:
+        key_bytes = base64.b64decode(self.encryption_key.encode())
+        encrypted_bytes = base64.b64decode(encrypted_message.encode())
+
+        cipher = Cipher(algorithms.AES(key_bytes), modes.ECB(), backend=default_backend())
         decryptor = cipher.decryptor()
 
-        # Deszyfrowanie wiadomości
-        decrypted_padded_message = decryptor.update(encrypted_message) + decryptor.finalize()
+        decrypted_padded_message = decryptor.update(encrypted_bytes) + decryptor.finalize()
 
-        # Usunięcie paddingu
         unpadder = padding.PKCS7(128).unpadder()
         decrypted_message = unpadder.update(decrypted_padded_message) + unpadder.finalize()
+
         return decrypted_message.decode()
 
 
