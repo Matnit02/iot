@@ -14,7 +14,7 @@ if hostname:
 else:
     CSRF_TRUSTED_ORIGINS = ["http://localhost"]
 
-DEBUG = False
+DEBUG = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
