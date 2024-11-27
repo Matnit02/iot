@@ -28,6 +28,10 @@ jobs:
         working-directory: web
         run: pip install -r requirements.txt
 
+      - name: Run collectstatic
+        working-directory: web
+        run: python manage.py collectstatic
+
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
       - name: Zip artifact for deployment
