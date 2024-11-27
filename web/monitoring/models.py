@@ -2,6 +2,12 @@ import secrets
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+# szyfrowanie
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from cryptography.hazmat.primitives import padding
+from cryptography.hazmat.backends import default_backend
+import os
+
 
 class Device(models.Model):
     encryption_key = models.CharField(
@@ -82,14 +88,33 @@ class Device(models.Model):
                 self.save()
                 break
 
-    def encode_message(self, message):
-        pass
 
-    def decode_message(self, message):
-        # Nie wiem w sumie czy to nam jest tu potrzebne,
-        # ale skoro i tak będzie na device to możesz wrzucić tutaj na przyszłość.
-        # Albo po prostu usunąć tą metodę
-        pass
+    def encrypt_message_ecb(message: str, key: bytes) -> bytes:
+        # Ustawienie szyfrowania AES w trybie ECB
+        cipher = Cipher(algorithms.AES(key), modes.ECB(), backend=default_backend())
+        encryptor = cipher.encryptor()
+
+        # Padding wiadomości do wymaganego rozmiaru przez AES
+        padder = padding.PKCS7(128).padder()
+        padded_message = padder.update(message.encode()) + padder.finalize()
+
+        # Szyfrowanie wiadomości
+        encrypted_message = encryptor.update(padded_message) + encryptor.finalize()
+        return encrypted_message
+
+
+    def decrypt_message_ecb(encrypted_message: bytes, key: bytes) -> str:
+        # Ustawienie szyfrowania AES w trybie ECB
+        cipher = Cipher(algorithms.AES(key), modes.ECB(), backend=default_backend())
+        decryptor = cipher.decryptor()
+
+        # Deszyfrowanie wiadomości
+        decrypted_padded_message = decryptor.update(encrypted_message) + decryptor.finalize()
+
+        # Usunięcie paddingu
+        unpadder = padding.PKCS7(128).unpadder()
+        decrypted_message = unpadder.update(decrypted_padded_message) + unpadder.finalize()
+        return decrypted_message.decode()
 
 
 class DeviceSnapshot(models.Model):
