@@ -13,6 +13,10 @@ logger = logging.getLogger("main")
 logger.setLevel(logging.INFO)
 logger.addHandler(log_handler)
 
+url = "https://waterlomonitorlo.azurewebsites.net/streamdata/"
+
+api_key = "test_api_key_5"
+
 logger.info("Started")
 
 proxy = Proximity()
@@ -63,6 +67,34 @@ except Exception as err:
   logger.error(err)
 
 #r = requests.post('SOME URL', data={'mic': mic.read(), 'proxy': proxy.read(), 'air': asyncio.run(air.read())})
+payload = {
+    "api_key": api_key,
+    "location_latitude": 50.046700,  # Przykładowe współrzędne
+    "location_longitude": 19.779300,
+    "data": {
+        "atmospheric_pressure": data.get("pressure", {}).get("pressure", "error"),
+        "water_temperature": data.get("temperature", {}).get("water_temp", "error"),
+        "air_temperature": data.get("temperature", {}).get("air_temp", "error"),
+        "pm1_0": data.get("air", {}).get("pm1_0", "error"),
+        "pm2_5": data.get("air", {}).get("pm2_5", "error"),
+        "pm10": data.get("air", {}).get("pm10", "error"),
+        "noise_level": 50,  # Przykładowa wartość
+        "light_intensity": data.get("brightness", "error"),
+    }
+}
+
+# Wysyłanie danych na backend
+headers = {"Content-Type": "application/json"}
+try:
+    response = requests.post(url, json=payload, headers=headers)
+    if response.status_code == 200:
+        logger.info("Dane zostały pomyślnie wysłane.")
+    else:
+        logger.error(f"Błąd wysyłania danych! Kod statusu: {response.status_code}, Odpowiedź: {response.text}")
+except Exception as e:
+    logger.error(f"Błąd sieci podczas wysyłania danych: {e}")
+
+time.sleep(60) #wysyłanie co 60 sekund
 
 proxy.clean()
 air.clean()
