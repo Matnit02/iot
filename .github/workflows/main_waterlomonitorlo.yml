@@ -68,4 +68,3 @@ jobs:
           app-name: 'waterlomonitorlo'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_5F88372CA93E42E59C625343444EE698 }}
-          app-location: 'web'
