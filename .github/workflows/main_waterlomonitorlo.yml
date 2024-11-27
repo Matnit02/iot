@@ -34,7 +34,8 @@ jobs:
 
       - name: Zip artifact for deployment
         run: |
-          mv web/* .
+          mv web/web ./
+          mv web/* ./
           rm -rf web
           zip -r release.zip ./*
 
