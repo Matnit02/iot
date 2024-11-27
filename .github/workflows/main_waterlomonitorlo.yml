@@ -30,9 +30,7 @@ jobs:
 
       - name: Run collectstatic
         working-directory: web
-        run: |
-          source venv/bin/activate
-          python manage.py collectstatic --noinput
+        run: python manage.py collectstatic
 
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
