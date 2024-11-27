@@ -89,7 +89,7 @@ class Device(models.Model):
                 break
 
 
-    def encrypt_message_ecb(message: str, key: bytes) -> bytes:
+    def encrypt_message_ecb(self, message: str, key: bytes) -> bytes:
         # Ustawienie szyfrowania AES w trybie ECB
         cipher = Cipher(algorithms.AES(key), modes.ECB(), backend=default_backend())
         encryptor = cipher.encryptor()
@@ -103,7 +103,7 @@ class Device(models.Model):
         return encrypted_message
 
 
-    def decrypt_message_ecb(encrypted_message: bytes, key: bytes) -> str:
+    def decrypt_message_ecb(self, encrypted_message: bytes, key: bytes) -> str:
         # Ustawienie szyfrowania AES w trybie ECB
         cipher = Cipher(algorithms.AES(key), modes.ECB(), backend=default_backend())
         decryptor = cipher.decryptor()
@@ -123,6 +123,10 @@ class DeviceSnapshot(models.Model):
         on_delete=models.CASCADE,
         related_name='snapshots',
         help_text="The device this snapshot is associated with."
+    )
+    name = models.CharField(
+        max_length=255,
+        help_text="An optional name or title for this snapshot."
     )
     location_latitude = models.DecimalField(
         max_digits=9,
@@ -216,5 +220,5 @@ class SensorValues(models.Model):
     )
 
     def __str__(self):
-        return (f"Sensor data for device at {self.device.location_latitude}, "
-                f"{self.device.location_longitude} on {self.timestamp}")
+        return (f"Sensor data for device at {self.device_snapshot .location_latitude}, "
+                f"{self.device_snapshot .location_longitude} on {self.timestamp}")

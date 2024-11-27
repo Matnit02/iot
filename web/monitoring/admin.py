@@ -10,7 +10,7 @@ class DeviceAdmin(admin.ModelAdmin):
 
 @admin.register(DeviceSnapshot)
 class DeviceSnapshotAdmin(admin.ModelAdmin):
-    list_display = ('id', 'device', 'location_latitude', 'location_longitude', 'active', 'description', 'last_sensor_update',
+    list_display = ('id', 'name', 'device', 'location_latitude', 'location_longitude', 'active', 'description', 'last_sensor_update',
                     'created_at')
     search_fields = ('id', 'location_latitude', 'location_longitude', 'description', 'created_at')
     list_filter = ('active',)

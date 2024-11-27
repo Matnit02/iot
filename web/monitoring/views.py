@@ -8,6 +8,28 @@ from .models import Device, DeviceSnapshot, SensorValues
 class HomepageView(TemplateView):
     template_name = 'homepage.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        snapshots = DeviceSnapshot.objects.all()
+        reservoirs = []
+
+        for snapshot in snapshots:
+            latest_sensor = snapshot.sensors.order_by('-timestamp').first()
+            if latest_sensor:
+                reservoirs.append({
+                    "id": snapshot.id,
+                    "name": snapshot.name,
+                    "coordinates": [float(snapshot.location_latitude), float(snapshot.location_longitude)],
+                    "air_temperature": latest_sensor.air_temperature,
+                    "water_temperature": latest_sensor.water_temperature,
+                    "pressure": latest_sensor.atmospheric_pressure,
+                    "noise_level": latest_sensor.noise_level,
+                })
+
+        context['reservoirs'] = reservoirs
+        context['reservoirs_json'] = json.dumps(reservoirs)
+        return context
+
 
 class ReauthenticateDevice(View):
     def post(self, request):
