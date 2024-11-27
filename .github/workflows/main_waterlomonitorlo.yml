@@ -33,6 +33,7 @@ jobs:
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
       - name: Zip artifact for deployment
+        working-directory: ${{ github.workspace }}
         run: |
           mv web/web ./web_temp
           mv web/* ./
