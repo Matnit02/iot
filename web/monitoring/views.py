@@ -30,6 +30,7 @@ class HomepageView(TemplateView):
                     "pm2_5": latest_sensor.pm2_5,
                     "pm10": latest_sensor.pm10,
                     "humidity": latest_sensor.humidity,
+                    "light_intensity": latest_sensor.light_intensity,
                 })
         context['reservoirs'] = reservoirs
         context['reservoirs_json'] = json.dumps(reservoirs)
