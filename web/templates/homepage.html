@@ -21,7 +21,7 @@
 <div id="sidebar" class="sidebar">
     <button onclick="closeMenu()" class="close-btn">&times;</button>
     <a href="#">Home</a>
-    <a href="#">About</a>
+    <a href="{% url 'about' %}">About</a>
     <a href="#">Reservoirs</a>
     <div class="submenu" id="reservoirsSubmenu">
         {% for reservoir in reservoirs %}

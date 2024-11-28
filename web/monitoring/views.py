@@ -37,6 +37,10 @@ class HomepageView(TemplateView):
         return context
 
 
+class AboutView(TemplateView):
+    template_name = 'about.html'
+
+
 class ReauthenticateDevice(View):
     def post(self, request):
         try:
