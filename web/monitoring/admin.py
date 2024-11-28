@@ -28,7 +28,7 @@ class DeviceSnapshotAdmin(admin.ModelAdmin):
 @admin.register(SensorValues)
 class SensorAdmin(admin.ModelAdmin):
     list_display = ('id', 'device_snapshot', 'timestamp', 'air_temperature', 'water_temperature', 'atmospheric_pressure',
-                    'pm1_0', 'pm2_5', 'pm10', 'noise_level', 'light_intensity',)
+                    'pm1_0', 'pm2_5', 'pm10', 'humidity', 'light_intensity',)
     search_fields = ('id', 'timestamp')
-    list_filter =   ('timestamp', 'air_temperature', 'water_temperature', 'atmospheric_pressure', 'pm1_0',
-                     'pm2_5', 'pm10', 'noise_level', 'light_intensity',)
+    list_filter = ('timestamp', 'air_temperature', 'water_temperature', 'atmospheric_pressure', 'pm1_0',
+                   'pm2_5', 'pm10', 'humidity', 'light_intensity',)
