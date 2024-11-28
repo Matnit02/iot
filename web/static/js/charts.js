@@ -66,7 +66,7 @@ function updateGauge(gaugeId, newValue) {
             pressureGauge.refresh(newValue);
             break;
         case 'humidityGauge':
-            noiseLevelGauge.refresh(newValue);
+            humidityGauge.refresh(newValue);
             break;
         default:
             console.warn(`Unknown gauge ID: ${gaugeId}`);
