@@ -3,7 +3,7 @@ function updateGauges(reservoir) {
     updateGauge('airTempGauge', reservoir.air_temperature);
     updateGauge('waterTempGauge', reservoir.water_temperature);
     updateGauge('pressureGauge', reservoir.pressure);
-    updateGauge('noiseLevelGauge', reservoir.noise_level);
+    updateGauge('humidityGauge', reservoir.humidity);
 }
 
 function selectReservoir(reservoirId, reservoirs) {
