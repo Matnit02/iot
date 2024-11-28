@@ -51,9 +51,9 @@
             <div id="pressureGauge" class="gauge-container"></div>
         </div>
         <div class="card">
-            <div class="gauge-title">Noise Level</div>
+            <div class="gauge-title">Humidity</div>
             <div class="gauge-time">A few seconds ago</div>
-            <div id="noiseLevelGauge" class="gauge-container"></div>
+            <div id="humidityGauge" class="gauge-container"></div>
         </div>
     </div>
 </div>
@@ -75,8 +75,8 @@
         </div>
     </div>
     <div class="card">
-        <div class="ranking-title">Lowest noise level:
-            <div class="ranking-value" id="lowest-noise"></div>
+        <div class="ranking-title">Lowest humidity:
+            <div class="ranking-value" id="lowest-humidity"></div>
         </div>
     </div>
 </div>
@@ -99,7 +99,7 @@
         getHighestAirTemp(reservoirs);
         getHighestWaterTemp(reservoirs);
         getBestPressure(reservoirs);
-        getLowestNoise(reservoirs);
+        getLowestHumidity(reservoirs);
         addReservoirMarkers(reservoirs, map)
         bindReservoirSelection(reservoirs)
     })

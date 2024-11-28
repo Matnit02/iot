@@ -40,13 +40,13 @@ document.addEventListener("DOMContentLoaded", function() {
         levelColors: ["#e3e5db", "#80ee7b", "#0fee05"]
     });
 
-    noiseLevelGauge = new JustGage({
-        id: "noiseLevelGauge",
+    humidityGauge = new JustGage({
+        id: "humidityGauge",
         value: 0,
         min: 0,
-        max: 120,
+        max: 100,
         title: "",
-        label: "dB",
+        label: "%",
         pointer: true,
         gaugeWidthScale: 0.8,
         gaugeColor: "#f0f0f0"
@@ -65,8 +65,8 @@ function updateGauge(gaugeId, newValue) {
         case 'pressureGauge':
             pressureGauge.refresh(newValue);
             break;
-        case 'noiseLevelGauge':
-            noiseLevelGauge.refresh(newValue);
+        case 'humidityGauge':
+            humidityGauge.refresh(newValue);
             break;
         default:
             console.warn(`Unknown gauge ID: ${gaugeId}`);
