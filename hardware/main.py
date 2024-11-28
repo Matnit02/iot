@@ -6,7 +6,7 @@ from inputlibs.pres import Pressure
 from inputlibs.temp import Temperature
 
 log_formatter = logging.Formatter('%(asctime)s %(levelname)s %(funcName)s(%(lineno)d) %(message)s')
-log_handler = RotatingFileHandler("log.txt", mode = "a", maxBytes=1024*1024, backupCount=2, encoding=None, delay=0)
+log_handler = RotatingFileHandler("/var/log/water_sensor.log", mode = "a", maxBytes=1024*1024, backupCount=2, encoding=None, delay=0)
 log_handler.setFormatter(log_formatter)
 
 logger = logging.getLogger("main")
@@ -93,11 +93,11 @@ headers = {"Content-Type": "application/json"}
 try:
     response = requests.post(url, json=payload, headers=headers)
     if response.status_code == 200:
-        logger.info("Dane zostały pomyślnie wysłane.")
+        logger.info("Data succesfully sent")
     else:
-        logger.error(f"Błąd wysyłania danych! Kod statusu: {response.status_code}, Odpowiedź: {response.text}")
+        logger.error(f"Error during data transfer! Error code: {response.status_code}, Response: {response.text}")
 except Exception as e:
-    logger.error(f"Błąd sieci podczas wysyłania danych: {e}")
+    logger.error(f"Network error during data transfer: {e}")
 
 #time.sleep(60) #wysyłanie co 60 sekund
 

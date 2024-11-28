@@ -44,3 +44,11 @@ Check if you're in venv, if not, run `source venv/bin/activate`
 If you don't have `venv` folder, run `python -m venv venv`, then run command above
 
 After entering `venv` (you should see `(venv)` at the beginning of your commandline prompt), run `pip install -r requirements.txt`
+
+# Crontab
+
+Verify you have crontab running with `/etc/init.d/cron status` (or its systemd equivalent)
+
+Run `sudo nano /etc/crontab`, and add `* * * * * root /home/raspberrypi/iot/hardware/venv/bin/python /home/raspberrypi/iot/hardware/main.py >/var/log/water_sensor_cron.log 2>&1`
+
+Keep in mind that the above command will change depending on location of this project
