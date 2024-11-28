@@ -1,4 +1,5 @@
 import json
+from math import isclose
 from django.views.generic import TemplateView, View
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -66,8 +67,8 @@ class ReceiveData(AuthenticateDevice, AnomalyDetectionMixin, View):
         sensor_data = data.get("data", {})
         last_snapshot = device.snapshots.order_by('-created_at').first()
 
-        if (last_snapshot is None or last_snapshot.location_latitude != location_latitude or
-                last_snapshot.location_longitude != location_longitude):
+        if (last_snapshot is None or not isclose(last_snapshot.location_latitude, location_latitude, rel_tol=1e-9) or
+                not isclose(last_snapshot.location_longitude, location_longitude, rel_tol=1e-9)):
             device_snapshot = DeviceSnapshot.objects.create(
                 device=device,
                 location_latitude=location_latitude,
