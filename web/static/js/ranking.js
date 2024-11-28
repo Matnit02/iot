@@ -37,15 +37,15 @@ function getBestPressure(reservoirs) {
     element.textContent = bestPressure + " hPa - " + location;
 }
 
-function getLowestNoise(reservoirs) {
-    var minNoise = 200;
+function getLowestHumidity(reservoirs) {
+    var minHumidity = 200;
     var location;
     reservoirs.forEach(element => {
-        if (element.noise_level < minNoise) {
-            minNoise = element.noise_level
+        if (element.humidity < minHumidity) {
+            minHumidity = element.humidity
             location = element.name;
         }
     });
-    var element = document.getElementById("lowest-noise");
-    element.textContent = minNoise + " dB - " + location;
+    var element = document.getElementById("lowest-humidity");
+    element.textContent = minHumidity + " % - " + location;
 }
