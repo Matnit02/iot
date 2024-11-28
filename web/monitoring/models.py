@@ -208,15 +208,16 @@ class SensorValues(models.Model):
         blank=True,
         help_text="Particulate Matter 10 concentration in µg/m³."
     )
-    noise_level = models.FloatField(
-        null=True,
-        blank=True,
-        help_text="Noise level measured in decibels."
-    )
     light_intensity = models.FloatField(
         null=True,
         blank=True,
         help_text="Light intensity in lux, which measures brightness."
+    )
+    humidity = models.FloatField(
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+        help_text="Relative humidity as a percentage. Must be between 0 and 100%."
     )
 
     def __str__(self):

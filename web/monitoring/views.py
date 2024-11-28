@@ -26,9 +26,11 @@ class HomepageView(TemplateView):
                     "air_temperature": latest_sensor.air_temperature,
                     "water_temperature": latest_sensor.water_temperature,
                     "pressure": latest_sensor.atmospheric_pressure,
-                    "noise_level": latest_sensor.noise_level,
+                    "pm1_0": latest_sensor.pm1_0,
+                    "pm2_5": latest_sensor.pm2_5,
+                    "pm10": latest_sensor.pm10,
+                    "humidity": latest_sensor.humidity,
                 })
-
         context['reservoirs'] = reservoirs
         context['reservoirs_json'] = json.dumps(reservoirs)
         return context
@@ -65,6 +67,13 @@ class ReceiveData(AuthenticateDevice, AnomalyDetectionMixin, View):
         location_latitude = data.get("location_latitude")
         location_longitude = data.get("location_longitude")
         sensor_data = data.get("data", {})
+
+        required_fields = ['atmospheric_pressure', 'water_temperature', 'air_temperature', 'pm1_0', 'pm2_5',
+                           'pm10', 'humidity', 'light_intensity']
+        missing_fields = [field for field in required_fields if field not in sensor_data or sensor_data[field] is None]
+
+        if missing_fields:
+            return JsonResponse({'success': False}, status=400)
         last_snapshot = device.snapshots.order_by('-created_at').first()
 
         if (last_snapshot is None or not isclose(last_snapshot.location_latitude, location_latitude, rel_tol=1e-9) or
@@ -86,7 +95,7 @@ class ReceiveData(AuthenticateDevice, AnomalyDetectionMixin, View):
             pm1_0=sensor_data.get("pm1_0"),
             pm2_5=sensor_data.get("pm2_5"),
             pm10=sensor_data.get("pm10"),
-            noise_level=sensor_data.get("noise_level"),
+            humidity=sensor_data.get("humidity"),
             light_intensity=sensor_data.get("light_intensity"),
         )
 
