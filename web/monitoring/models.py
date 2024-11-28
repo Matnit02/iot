@@ -94,10 +94,6 @@ class Device(models.Model):
                 self.save()
                 break
 
-
-    def encrypt_message_ecb(self, message: str, key: bytes) -> bytes:
-        # Ustawienie szyfrowania AES w trybie ECB
-        cipher = Cipher(algorithms.AES(key), modes.ECB(), backend=default_backend())
     def encrypt_message(self, message: str) -> str:
         key_bytes = base64.b64decode(self.encryption_key.encode())
 
@@ -110,7 +106,6 @@ class Device(models.Model):
         encrypted_message = encryptor.update(padded_message) + encryptor.finalize()
 
         return base64.b64encode(encrypted_message).decode()
-
 
     def decrypt_message(self, encrypted_message: str) -> str:
         key_bytes = base64.b64decode(self.encryption_key.encode())
