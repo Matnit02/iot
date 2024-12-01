@@ -1,3 +1,73 @@
-body {
-    background-color: red;
+/* Główna kontenerka */
+.about-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9; /* Jasne tło dla kontrastu */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtelny cień */
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+}
+
+/* Tytuły sekcji */
+.about-subtitle {
+    font-size: 1.8em;
+    color: #333; /* Ciemny szary kolor */
+    margin-bottom: 15px;
+    border-bottom: 2px solid #007BFF; /* Podkreślenie tytułu */
+    padding-bottom: 5px;
+}
+
+/* Opisy tekstowe */
+.about-description {
+    font-size: 1em;
+    color: #555; /* Szary kolor */
+    margin-bottom: 20px;
+    text-align: justify; /* Justowanie tekstu */
+}
+
+/* Lista punktowa */
+.about-list {
+    margin-left: 20px;
+    margin-bottom: 20px;
+    color: #333; /* Kolor tekstu */
+    font-size: 1em;
+}
+
+.about-list li {
+    margin-bottom: 10px;
+}
+
+/* Lista numerowana */
+.about-steps {
+    margin-left: 20px;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 1em;
+}
+
+.about-steps li {
+    margin-bottom: 15px;
+}
+
+/* Elementy pogrubione */
+.about-container strong {
+    color: #007BFF;
+    font-weight: bold;
+}
+
+/* Responsywność */
+@media (max-width: 768px) {
+    .about-container {
+        padding: 15px;
+    }
+    .about-subtitle {
+        font-size: 1.5em;
+    }
+    .about-description,
+    .about-list,
+    .about-steps {
+        font-size: 0.95em;
+    }
 }

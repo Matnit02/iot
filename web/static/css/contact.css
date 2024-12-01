@@ -1,0 +1,32 @@
+/* Główna kontenerka */
+.contact-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9; /* Jasne tło */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Delikatny cień */
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+}
+
+/* Tytuły sekcji */
+.contact-subtitle {
+    font-size: 1.8em;
+    color: #333; /* Ciemny szary */
+    margin-bottom: 15px;
+    border-bottom: 2px solid #007BFF; /* Akcent */
+    padding-bottom: 5px;
+}
+
+/* Opisy tekstowe */
+.contact-description {
+    font-size: 1em;
+    color: #555; /* Szary */
+    margin-bottom: 20px;
+
+}
+
+.footer {
+position: absolute;
+}
