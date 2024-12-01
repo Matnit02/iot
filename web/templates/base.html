@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Default Title{% endblock %}</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="{% static 'css/homepage.css' %}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+
+<header>
+    <button onclick="openMenu()" class="menu-btn">&#9776;</button>
+    <h1>{% block header_title %}My Website{% endblock %}</h1>
+</header>
+
+<!-- Sidebar Menu -->
+<div id="sidebar" class="sidebar">
+    <button onclick="closeMenu()" class="close-btn">&times;</button>
+    <a href="{% url 'homepage' %}">Home</a>
+    <a href="{% url 'about' %}">About</a>
+    <a href="#">Reservoirs</a>
+    <div class="submenu" id="reservoirsSubmenu">
+        {% for reservoir in reservoirs %}
+            <a href="#" data-reservoir-id="{{ reservoir.id }}">{{ reservoir.name }}</a>
+        {% endfor %}
+    </div>
+        <a href="{% url 'contact' %}">Contact</a>
+</div>
+
+<div class="content">
+    {% block content %}{% endblock %}
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-container">
+        <p>&copy; {{ current_year }} Water Reservoirs Map All rights reserved.</p>
+        <div class="footer-links">
+            <a href="{% url 'homepage' %}">Home</a>
+            <a href="{% url 'about' %}">About</a>
+            <a href="{% url 'contact' %}">Contact</a>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.4/raphael-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/justgage@1.4.0/justgage.min.js"></script>
+<script src="{% static 'js/charts.js' %}"></script>
+<script src="{% static 'js/map.js' %}"></script>
+<script src="{% static 'js/nav.js' %}"></script>
+<script src="{% static 'js/ranking.js' %}"></script>
+<script type="text/javascript">
+    window.addEventListener('load', () => {
+        const reservoirs = {{ reservoirs_json|safe }};
+        const map = L.map('map').setView([50.0647, 19.9450], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        getHighestAirTemp(reservoirs);
+        getHighestWaterTemp(reservoirs);
+        getBestPressure(reservoirs);
+        getLowestHumidity(reservoirs);
+        addReservoirMarkers(reservoirs, map)
+        bindReservoirSelection(reservoirs)
+    })
+</script>
+</body>
+</html>

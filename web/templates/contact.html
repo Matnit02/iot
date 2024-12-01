@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact Us{% endblock %}
+{% block header_title %}Water Reservoirs Team{% endblock %}
+{% block head %}
+    {{ block.super }}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/contact.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="contact-container">
+    <h3 class="contact-subtitle">Skontaktuj się z nami</h3>
+    <p class="contact-description">
+        Jeśli masz pytania dotyczące naszego projektu lub chcesz dowiedzieć się więcej o naszych rozwiązaniach IoT, skontaktuj się z nami za pomocą poniższych informacji. Jesteśmy tutaj, aby pomóc!
+    </p>
+
+    <h3 class="contact-subtitle">Informacje kontaktowe</h3>
+    <ul class="contact-list">
+        <li><strong>Email:</strong> kontakt@iotreservoirs.com</li>
+        <li><strong>Telefon:</strong> +48 123 456 789</li>
+        <li><strong>Adres:</strong> ul. Technologiczna 10, 30-001 Kraków</li>
+    </ul>
+</div>
+{% endblock %}

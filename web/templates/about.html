@@ -1,13 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+{% extends 'base.html' %}
 
-{% load static %}
-<link rel="stylesheet" href="{% static 'css/about.css' %}">
-<body>
-some about info
-</body>
-</html>
+{% block title %}About Us{% endblock %}
+{% block header_title %}About Water Reservoirs{% endblock %}
+{% block head %}
+    {{ block.super }}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/about.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="about-container">
+    <h3 class="about-subtitle">Nasz projekt</h3>
+    <p class="about-description">
+        W ramach realizacji projektu zespół opracował fizyczną infrastrukturę (koncepcyjnie jedno urządzenie) składającą się z mikrokomputera Raspberry Pi oraz z czujników mierzących różne parametry wody. Zespół opracował również oprogramowanie, które na podstawie zgromadzonych danych umożliwi ich analizę i wizualizację na mapie.
+    </p>
+
+    <h3 class="about-subtitle">Z czego korzystamy</h3>
+    <p class="about-description">
+        Centrum naszego systemu stanowi <strong>urządzenie IoT oparte na Raspberry Pi</strong>, które współpracuje z siecią czujników monitorujących:
+    </p>
+    <ul class="about-list">
+        <li>Jakość i czystość powietrza,</li>
+        <li>Ciśnienie,</li>
+        <li>Temperaturę (powietrza i wody),</li>
+        <li>Natężenie światła,</li>
+        <li>Poziom hałasu.</li>
+    </ul>
+    <p class="about-description">
+        Nasze urządzenia zbierają dane w regularnych odstępach czasu i bezpiecznie przesyłają je do serwera backendowego, gdzie są przetwarzane i analizowane.
+    </p>
+
+    <h3 class="about-subtitle">Jak działamy</h3>
+    <ol class="about-steps">
+        <li><strong>Zbieranie danych:</strong> Nasze urządzenia IoT zbierają dane środowiskowe co 30 minut.</li>
+        <li><strong>Przesyłanie danych:</strong> Dane są bezpiecznie przesyłane na nasz serwer backendowy, a proces ten zabezpieczony jest poprzez szyfrowane kluczem API.</li>
+        <li><strong>Analiza i przechowywanie:</strong> Serwer przetwarza dane, wykrywa anomalie i przechowuje je w solidnej bazie danych do późniejszego wykorzystania.</li>
+        <li><strong>Interakcja z użytkownikiem:</strong> Dane są prezentowane w intuicyjnej aplikacji internetowej, oferując wgląd w czasie rzeczywistym, w tym wizualizacje na mapie.</li>
+    </ol>
+</div>
+{% endblock %}
