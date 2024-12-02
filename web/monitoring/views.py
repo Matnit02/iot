@@ -4,44 +4,19 @@ from django.views.generic import TemplateView, View
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-from .mixins import AuthenticateDevice, AnomalyDetectionMixin
+from .mixins import AuthenticateDevice, AnomalyDetectionMixin, GetReservoirsMixin
 from .models import Device, DeviceSnapshot, SensorValues
 
 
-class HomepageView(TemplateView):
+class HomepageView(GetReservoirsMixin, TemplateView):
     template_name = 'homepage.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        snapshots = DeviceSnapshot.objects.all()
-        reservoirs = []
 
-        for snapshot in snapshots:
-            latest_sensor = snapshot.sensors.order_by('-timestamp').first()
-            if latest_sensor:
-                reservoirs.append({
-                    "id": snapshot.id,
-                    "name": snapshot.device.name,
-                    "coordinates": [float(snapshot.location_latitude), float(snapshot.location_longitude)],
-                    "air_temperature": latest_sensor.air_temperature,
-                    "water_temperature": latest_sensor.water_temperature,
-                    "pressure": latest_sensor.atmospheric_pressure,
-                    "pm1_0": latest_sensor.pm1_0,
-                    "pm2_5": latest_sensor.pm2_5,
-                    "pm10": latest_sensor.pm10,
-                    "humidity": latest_sensor.humidity,
-                    "light_intensity": latest_sensor.light_intensity,
-                })
-        context['reservoirs'] = reservoirs
-        context['reservoirs_json'] = json.dumps(reservoirs)
-        return context
-
-
-class AboutView(TemplateView):
+class AboutView(GetReservoirsMixin, TemplateView):
     template_name = 'about.html'
 
 
-class ContactView(TemplateView):
+class ContactView(GetReservoirsMixin, TemplateView):
     template_name = 'contact.html'
 
 

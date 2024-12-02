@@ -104,3 +104,35 @@ class AnomalyDetectionMixin:
             return HttpResponse(status=400)
 
         return super().dispatch(request, *args, **kwargs)
+
+class GetReservoirsMixin:
+    def get_reservoirs_data(self):
+        """Fetch and prepare reservoirs data."""
+        snapshots = DeviceSnapshot.objects.all()
+        reservoirs = []
+
+        for snapshot in snapshots:
+            latest_sensor = snapshot.sensors.first()
+            if latest_sensor:
+                reservoirs.append({
+                    "id": snapshot.id,
+                    "name": snapshot.device.name,
+                    "coordinates": [float(snapshot.location_latitude), float(snapshot.location_longitude)],
+                    "air_temperature": latest_sensor.air_temperature,
+                    "water_temperature": latest_sensor.water_temperature,
+                    "pressure": latest_sensor.atmospheric_pressure,
+                    "pm1_0": latest_sensor.pm1_0,
+                    "pm2_5": latest_sensor.pm2_5,
+                    "pm10": latest_sensor.pm10,
+                    "humidity": latest_sensor.humidity,
+                    "light_intensity": latest_sensor.light_intensity,
+                })
+        return reservoirs
+
+    def get_context_data(self, **kwargs):
+        """Add reservoirs data to the context."""
+        context = super().get_context_data(**kwargs)
+        reservoirs = self.get_reservoirs_data()
+        context['reservoirs'] = reservoirs
+        context['reservoirs_json'] = json.dumps(reservoirs)
+        return context
