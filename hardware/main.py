@@ -87,10 +87,10 @@ logger.debug(payload)
 device_data_sender = DeviceDataSender(logger)
 try:
     device_data_sender.send_data(payload=payload)
-except ConnectionError:
-    logger.error(f'Connection error during data transfer')
-except Timeout:
-    logger.error('Error: The request timed out.')
+except ConnectionError as e:
+    logger.error(f'Connection error during data transfer: {e}')
+except Timeout as e:
+    logger.error('Error: The request timed out.: {e}')
 except RequestException as e:
     logger.error(f'Error: An unexpected error occurred: {e}')
 

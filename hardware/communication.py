@@ -13,7 +13,7 @@ class DeviceDataSender:
     def __init__(self, logger):
         self.logger = logger
         self.url = 'https://waterlomonitorlo.azurewebsites.net//streamdata/'
-        self.reauthenticate_url = 'http://127.0.0.1:8000/reauthenticate/'
+        self.reauthenticate_url = 'http://waterlomonitorlo.azurewebsites.net//reauthenticate/'
         self.headers = {
             'Content-Type': 'application/json'
         }
