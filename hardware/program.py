@@ -42,5 +42,5 @@ if __name__ == '__main__':
     parser.add_argument('--api_key', required=True, help='The API key to store securely.')
     args = parser.parse_args()
 
-    encrypt_and_store_key(args.encryption_key, 'encryption_key.key', read_only=True)
+    encrypt_and_store_key(args.encryption_key, 'encryption_key.key')
     encrypt_and_store_key(args.api_key, 'api_key.key')

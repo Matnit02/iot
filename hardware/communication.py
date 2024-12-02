@@ -6,7 +6,7 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives import padding
 from cryptography.hazmat.backends import default_backend
 import os
-from hardware.main import logger
+import logging
 
 
 class DeviceDataSender:
@@ -22,19 +22,19 @@ class DeviceDataSender:
 
     def send_data(self, payload):
         payload['api_key'] = self.api_key
-        logger.info(f'Sending data.')
-        logger.debug(f'payload: {payload}')
+        self.logger.info(f'Sending data.')
+        self.logger.debug(f'payload: {payload}')
 
         response = requests.post(self.url, json=payload, headers=self.headers)
 
         if response.status_code == 200 and response.json()['success'] == True:
-            logger.info('Data successfully sent')
+            self.logger.info('Data successfully sent')
             return
         elif response.status_code == 400 or response.status_code == 403:
-            logger.error('Device is misconfigured. Please, contact official support.')
+            self.logger.error('Device is misconfigured. Please, contact official support.')
 
         if response.json()['success'] == False and response.json()['error'] == 'device_deauthenticated':
-            logger.info('Device is not authenticated. Trying to reauthenticate')
+            self.logger.info('Device is not authenticated. Trying to reauthenticate')
             authenticate_response = requests.post(self.reauthenticate_url, json={'key': self.api_key}, headers=self.headers)
 
             if authenticate_response.json()['success']:
@@ -43,15 +43,15 @@ class DeviceDataSender:
                 self._save_new_api_key(decrypted_key)
                 self.api_key = decrypted_key
                 payload['api_key'] = self.api_key
-                logger.info('Successfully acquired new API key.')
+                self.logger.info('Successfully acquired new API key.')
 
-            logger.info('Sending the data again after the authentication')
+            self.logger.info('Sending the data again after the authentication')
             response = requests.post(self.url, json=payload, headers=self.headers)
 
         if response.status_code == 200 and response.json()['success'] == True:
-            logger.info('Data successfully sent')
+            self.logger.info('Data successfully sent')
         elif response.json()['success'] == False and response.json()['error'] == 'device_deauthenticated':
-            logger.info('Device was not authenticated again. Key was hijacked or request was sent too soon.')
+            self.logger.info('Device was not authenticated again. Key was hijacked or request was sent too soon.')
 
     @staticmethod
     def _get_cpu_serial():
