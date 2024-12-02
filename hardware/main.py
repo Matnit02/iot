@@ -68,8 +68,8 @@ logger.debug("Got sensor data")
 logger.debug(data)
 
 payload = {
-    "location_latitude": 50.046700,  # Przykładowe współrzędne
-    "location_longitude": 19.779300,
+    "location_latitude": 50.048220,  # Przykładowe współrzędne
+    "location_longitude": 19.792444,
     "data": {
         "atmospheric_pressure": data.get("pressure", {}).get("sea_level_pressure", "error"),
         "water_temperature": data.get("temperature", {}).get("temp1", "error"),
@@ -77,7 +77,7 @@ payload = {
         "pm1_0": data.get("air", {}).get("pm_1.0", "error"),
         "pm2_5": data.get("air", {}).get("pm_2.5", "error"),
         "pm10": data.get("air", {}).get("pm_10", "error"),
-        "humidity": 50,  # Przykładowa wartość
+        "humidity": data.get("air", {}).get("humi", "error"),
         "light_intensity": data.get("brightness", "error"),
     }
 }
