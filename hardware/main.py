@@ -94,7 +94,7 @@ except Timeout:
 except RequestException as e:
     logger.error(f'Error: An unexpected error occurred: {e}')
 
-time.sleep(120) #wysyłanie co 60 sekund
+#time.sleep(120) #wysyłanie co 60 sekund
 
 proxy.clean()
 air.clean()
