@@ -4,6 +4,8 @@ from inputlibs.air import Air
 from inputlibs.proxy import Proximity
 from inputlibs.pres import Pressure
 from inputlibs.temp import Temperature
+from communication import DeviceDataSender
+from requests.exceptions import ConnectionError, Timeout, RequestException
 
 log_formatter = logging.Formatter('%(asctime)s %(levelname)s %(funcName)s(%(lineno)d) %(message)s')
 log_handler = RotatingFileHandler("/var/log/water_sensor.log", mode = "a", maxBytes=1024*1024, backupCount=2, encoding=None, delay=0)
@@ -12,10 +14,6 @@ log_handler.setFormatter(log_formatter)
 logger = logging.getLogger("main")
 logger.setLevel(logging.DEBUG)
 logger.addHandler(log_handler)
-
-url = "https://waterlomonitorlo.azurewebsites.net/streamdata/"
-
-api_key = "test_api_key_5"
 
 logger.info("Started")
 
@@ -69,9 +67,7 @@ except Exception as err:
 logger.debug("Got sensor data")
 logger.debug(data)
 
-#r = requests.post('SOME URL', data={'mic': mic.read(), 'proxy': proxy.read(), 'air': asyncio.run(air.read())})
 payload = {
-    "api_key": api_key,
     "location_latitude": 50.046700,  # Przykładowe współrzędne
     "location_longitude": 19.779300,
     "data": {
@@ -81,25 +77,24 @@ payload = {
         "pm1_0": data.get("air", {}).get("pm_1.0", "error"),
         "pm2_5": data.get("air", {}).get("pm_2.5", "error"),
         "pm10": data.get("air", {}).get("pm_10", "error"),
-        "noise_level": 50,  # Przykładowa wartość
+        "humidity": 50,  # Przykładowa wartość
         "light_intensity": data.get("brightness", "error"),
     }
 }
 logger.debug("Setup payload")
 logger.debug(payload)
 
-# Wysyłanie danych na backend
-headers = {"Content-Type": "application/json"}
+device_data_sender = DeviceDataSender(logger)
 try:
-    response = requests.post(url, json=payload, headers=headers)
-    if response.status_code == 200:
-        logger.info("Data succesfully sent")
-    else:
-        logger.error(f"Error during data transfer! Error code: {response.status_code}, Response: {response.text}")
-except Exception as e:
-    logger.error(f"Network error during data transfer: {e}")
+    device_data_sender.send_data(payload=payload)
+except ConnectionError:
+    logger.error(f'Connection error during data transfer')
+except Timeout:
+    logger.error('Error: The request timed out.')
+except RequestException as e:
+    logger.error(f'Error: An unexpected error occurred: {e}')
 
-#time.sleep(60) #wysyłanie co 60 sekund
+time.sleep(120) #wysyłanie co 60 sekund
 
 proxy.clean()
 air.clean()

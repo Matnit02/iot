@@ -77,7 +77,7 @@ class Device(models.Model):
     def key_reactivate(self):
         """Activates the API key by setting `api_key_active` to True and clearing the `api_key` field."""
         self.api_key_active = True
-        self.api_key = None
+        self.temporary_api_key = None
         self.save()
 
     def is_api_key_active(self):
@@ -87,7 +87,7 @@ class Device(models.Model):
     def generate_new_api_key(self):
         """Generates a unique, secure API key for the Device model."""
         while True:
-            new_key = secrets.token_urlsafe(255)
+            new_key = secrets.token_urlsafe(255)[:255]
             if not Device.objects.filter(api_key=new_key).exists():
                 self.temporary_api_key = self.api_key
                 self.api_key = new_key

@@ -45,6 +45,7 @@ class ContactView(TemplateView):
     template_name = 'contact.html'
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class ReauthenticateDevice(View):
     def post(self, request):
         try:
@@ -54,7 +55,7 @@ class ReauthenticateDevice(View):
 
         key = data.get('key')
 
-        device = Device(key=key)
+        device, _ = Device.get_device_by_api_key(api_key=key)
         if device is None:
             return HttpResponse(status=403)
         elif device.is_api_key_active():
@@ -63,8 +64,8 @@ class ReauthenticateDevice(View):
         if device.temporary_api_key is None:
             device.generate_new_api_key()
 
-        encrypted_key = device.encode_message(device.api_key)
-        return JsonResponse({'success': False, 'key': encrypted_key})
+        encrypted_key = device.encrypt_message(device.api_key)
+        return JsonResponse({'success': True, 'key': encrypted_key})
 
 
 @method_decorator(csrf_exempt, name='dispatch')

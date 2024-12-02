@@ -40,11 +40,12 @@ class AuthenticateDevice:
             if main_key_used:
                 if device.is_api_key_active():
                     request.device = device
-                else:
+                    return super().dispatch(request, *args, **kwargs)
+                elif device.temporary_api_key is not None:
                     device.key_reactivate()
                     request.device = device
+                    return super().dispatch(request, *args, **kwargs)
 
-                return super().dispatch(request, *args, **kwargs)
 
             return JsonResponse({'success': False, 'error': 'device_deauthenticated'})
 
@@ -74,32 +75,32 @@ class AnomalyDetectionMixin:
         if request.method == 'POST':
             device = request.device
 
-            # last_sensor_data = SensorValues.objects.filter(device_snapshot__device=device).order_by('-timestamp').first()
-            # if last_sensor_data:
-            #     min_interval = timedelta(minutes=settings.SENSOR_VALUES_MIN_INTERVAL_MINUTES)
-            #     time_since_last_data = timezone.now() - last_sensor_data.timestamp
-            #     if time_since_last_data < min_interval:
-            #         device.key_deactivate()
-            #         return JsonResponse({'success': False, 'error': 'device_deauthenticated'})
-            #
-            # data = json.loads(request.body)
-            # new_latitude = data.get("location_latitude")
-            # new_longitude = data.get("location_longitude")
-            #
-            # if new_latitude is not None and new_longitude is not None:
-            #     last_snapshot = DeviceSnapshot.objects.filter(device=device).order_by('-created_at').first()
-            #
-            #     if last_snapshot and (last_snapshot.location_latitude != new_latitude or
-            #                           last_snapshot.location_longitude != new_longitude):
-            #         location_interval = timezone.now() - timedelta(hours=settings.LOCATION_CHANGE_INTERVAL_HOURS)
-            #         location_changes = DeviceSnapshot.objects.filter(device=device, created_at__gte=location_interval).count()
-            #
-            #         if location_changes >= settings.MAX_LOCATION_CHANGES:
-            #             device.deactivate()
-            #             return JsonResponse({'success': False, 'error': 'device_deauthenticated'})
-            #
-            #     return super().dispatch(request, *args, **kwargs)
-            #
-            # return HttpResponse(status=400)
+            last_sensor_data = SensorValues.objects.filter(device_snapshot__device=device).order_by('-timestamp').first()
+            if last_sensor_data:
+                min_interval = timedelta(minutes=settings.SENSOR_VALUES_MIN_INTERVAL_MINUTES)
+                time_since_last_data = timezone.now() - last_sensor_data.timestamp
+                if time_since_last_data < min_interval:
+                    device.key_deactivate()
+                    return JsonResponse({'success': False, 'error': 'device_deauthenticated'})
+
+            data = json.loads(request.body)
+            new_latitude = data.get("location_latitude")
+            new_longitude = data.get("location_longitude")
+
+            if new_latitude is not None and new_longitude is not None:
+                last_snapshot = DeviceSnapshot.objects.filter(device=device).order_by('-created_at').first()
+
+                if last_snapshot and (last_snapshot.location_latitude != new_latitude or
+                                      last_snapshot.location_longitude != new_longitude):
+                    location_interval = timezone.now() - timedelta(hours=settings.LOCATION_CHANGE_INTERVAL_HOURS)
+                    location_changes = DeviceSnapshot.objects.filter(device=device, created_at__gte=location_interval).count()
+
+                    if location_changes >= settings.MAX_LOCATION_CHANGES:
+                        device.deactivate()
+                        return JsonResponse({'success': False, 'error': 'device_deauthenticated'})
+
+                return super().dispatch(request, *args, **kwargs)
+
+            return HttpResponse(status=400)
 
         return super().dispatch(request, *args, **kwargs)
