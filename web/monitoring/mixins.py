@@ -127,7 +127,6 @@ class GetReservoirsMixin:
                     "humidity": latest_sensor.humidity,
                     "light_intensity": latest_sensor.light_intensity,
                 })
-        print(f'XXXX :{reservoirs}')
         return reservoirs
 
     def get_context_data(self, **kwargs):
