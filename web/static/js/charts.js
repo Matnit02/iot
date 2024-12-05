@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function() {
         id: "lightIntensityGauge",
         value: 0,
         min: 0,
-        max: 10000,
+        max: 65535,
         title: "",
         label: "lx",
         pointer: true,
