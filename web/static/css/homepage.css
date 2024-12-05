@@ -113,6 +113,18 @@ header h1
 {
     font-weight: bolder;
 }
+
+.header-link
+{
+    text-decoration: none;
+    color: #007BFF;
+}
+
+.header-link:visited
+{
+    color: #007BFF;
+}
+
 /* Sidebar Styling */
 .sidebar {
     height: 100%;
