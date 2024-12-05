@@ -27,6 +27,26 @@
                 <div class="gauge-time">A few seconds ago</div>
                 <div id="humidityGauge" class="gauge-container"></div>
             </div>
+            <div class="card">
+                <div class="gauge-title">Light Intensity</div>
+                <div class="gauge-time">A few seconds ago</div>
+                <div id="lightIntensityGauge" class="gauge-container"></div>
+            </div>
+            <div class="card">
+                <div class="gauge-title">PM 1.0 Pollution</div>
+                <div class="gauge-time">A few seconds ago</div>
+                <div id="pm1_0Gauge" class="gauge-container"></div>
+            </div>
+            <div class="card">
+                <div class="gauge-title">PM 2.5 Pollution</div>
+                <div class="gauge-time">A few seconds ago</div>
+                <div id="pm2_5Gauge" class="gauge-container"></div>
+            </div>
+            <div class="card">
+                <div class="gauge-title">PM 10 Pollution</div>
+                <div class="gauge-time">A few seconds ago</div>
+                <div id="pm10Gauge" class="gauge-container"></div>
+            </div>
         </div>
     </div>
 
@@ -49,6 +69,26 @@
         <div class="card">
             <div class="ranking-title">Lowest humidity:
                 <div class="ranking-value" id="lowest-humidity"></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="ranking-title">Highest light intensity:
+                <div class="ranking-value" id="highest-intensity"></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="ranking-title">Lowest PM 1.0 pollution:
+                <div class="ranking-value" id="lowest-pm1_0"></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="ranking-title">Lowest PM 2.5 pollution:
+                <div class="ranking-value" id="lowest-pm2_5"></div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="ranking-title">Lowest PM 10 pollution:
+                <div class="ranking-value" id="lowest-pm10"></div>
             </div>
         </div>
     </div>
@@ -75,6 +115,10 @@
             getHighestWaterTemp(reservoirs);
             getBestPressure(reservoirs);
             getLowestHumidity(reservoirs);
+            getHighestLightIntensity(reservoirs);
+            getLowestPm1_0(reservoirs);
+            getLowestPm2_5(reservoirs);
+            getLowestPm10(reservoirs);
             addReservoirMarkers(reservoirs, map)
             bindReservoirSelection(reservoirs)
         })

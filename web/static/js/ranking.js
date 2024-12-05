@@ -49,3 +49,55 @@ function getLowestHumidity(reservoirs) {
     var element = document.getElementById("lowest-humidity");
     element.textContent = minHumidity + " % - " + location;
 }
+
+function getHighestLightIntensity(reservoirs) {
+    var maxIntensity = 0;
+    var location;
+    reservoirs.forEach(element => {
+        if (element.light_intensity > maxIntensity) {
+            maxIntensity = element.light_intensity
+            location = element.name;
+        }
+    });
+    var element = document.getElementById("highest-intensity");
+    element.textContent = maxIntensity + " lx - " + location;
+}
+
+function getLowestPm1_0(reservoirs) {
+    var minPm1_0 = 10000;
+    var location;
+    reservoirs.forEach(element => {
+        if (element.pm1_0 < minPm1_0) {
+            minPm1_0 = element.pm1_0
+            location = element.name;
+        }
+    });
+    var element = document.getElementById("lowest-pm1_0");
+    element.textContent = minPm1_0 + " µg/m3 - " + location;
+}
+
+function getLowestPm2_5(reservoirs) {
+    var minPm2_5 = 10000;
+    var location;
+    reservoirs.forEach(element => {
+        if (element.pm2_5 < minPm2_5) {
+            minPm2_5 = element.pm2_5
+            location = element.name;
+        }
+    });
+    var element = document.getElementById("lowest-pm2_5");
+    element.textContent = minPm2_5 + " µg/m3 - " + location;
+}
+
+function getLowestPm10(reservoirs) {
+    var minPm10 = 10000;
+    var location;
+    reservoirs.forEach(element => {
+        if (element.pm10 < minPm10) {
+            minPm10 = element.pm10
+            location = element.name;
+        }
+    });
+    var element = document.getElementById("lowest-pm10");
+    element.textContent = minPm10 + " µg/m3 - " + location;
+}

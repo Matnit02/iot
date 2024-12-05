@@ -1,4 +1,4 @@
-let airTempGauge, waterTempGauge, pressureGauge, noiseLevelGauge;
+let airTempGauge, waterTempGauge, pressureGauge, noiseLevelGauge, lightIntensityGauge, pm1_0Gauge, pm2_5Gauge, pm10Gauge;
 
 document.addEventListener("DOMContentLoaded", function() {
     // Initialize each gauge
@@ -51,6 +51,55 @@ document.addEventListener("DOMContentLoaded", function() {
         gaugeWidthScale: 0.8,
         gaugeColor: "#f0f0f0"
     });
+
+    lightIntensityGauge = new JustGage({
+        id: "lightIntensityGauge",
+        value: 0,
+        min: 0,
+        max: 10000,
+        title: "",
+        label: "lx",
+        pointer: true,
+        gaugeWidthScale: 0.8,
+        gaugeColor: "#f0f0f0",
+        levelColors: ["#0c12c2", "#deca95", "#d1b25c"]
+    });
+
+    pm1_0Gauge = new JustGage({
+        id: "pm1_0Gauge",
+        value: 0,
+        min: 0,
+        max: 300,
+        title: "",
+        label: "µg/m³",
+        pointer: true,
+        gaugeWidthScale: 0.8,
+        gaugeColor: "#f0f0f0"
+    });
+
+    pm2_5Gauge = new JustGage({
+        id: "pm2_5Gauge",
+        value: 0,
+        min: 0,
+        max: 300,
+        title: "",
+        label: "µg/m³",
+        pointer: true,
+        gaugeWidthScale: 0.8,
+        gaugeColor: "#f0f0f0"
+    });
+
+    pm10Gauge = new JustGage({
+        id: "pm10Gauge",
+        value: 0,
+        min: 0,
+        max: 300,
+        title: "",
+        label: "µg/m³",
+        pointer: true,
+        gaugeWidthScale: 0.8,
+        gaugeColor: "#f0f0f0"
+    });
 });
 
 // Function to update each gauge with new data
@@ -68,6 +117,18 @@ function updateGauge(gaugeId, newValue) {
         case 'humidityGauge':
             humidityGauge.refresh(newValue);
             break;
+        case 'lightIntensityGauge':
+            lightIntensityGauge.refresh(newValue);
+            break;
+         case 'pm1_0Gauge':
+            pm1_0Gauge.refresh(newValue);
+            break;
+        case 'pm2_5Gauge':
+            pm2_5Gauge.refresh(newValue);
+            break;
+        case 'pm10Gauge':
+            pm10Gauge.refresh(newValue);
+            break;   
         default:
             console.warn(`Unknown gauge ID: ${gaugeId}`);
     }

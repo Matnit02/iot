@@ -4,6 +4,10 @@ function updateGauges(reservoir) {
     updateGauge('waterTempGauge', reservoir.water_temperature);
     updateGauge('pressureGauge', reservoir.pressure);
     updateGauge('humidityGauge', reservoir.humidity);
+    updateGauge('lightIntensityGauge', reservoir.light_intensity);
+    updateGauge('pm1_0Gauge', reservoir.pm1_0);
+    updateGauge('pm2_5Gauge', reservoir.pm2_5);
+    updateGauge('pm10Gauge', reservoir.pm10);
 }
 
 function selectReservoir(reservoirId, reservoirs) {
